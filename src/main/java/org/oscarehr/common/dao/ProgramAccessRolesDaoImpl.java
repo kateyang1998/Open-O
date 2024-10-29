@@ -46,7 +46,7 @@ public class ProgramAccessRolesDaoImpl extends AbstractDaoImpl<ProgramAccessRole
      */
     @Override
     public int removeAll() {
-        Query q = entityManager.createQuery("DELETE FROM " + getModelClassName());
+        Query q = entityManager.createQuery("DELETE FROM " + modelClass.getSimpleName());
         return q.executeUpdate();
     }
 }
