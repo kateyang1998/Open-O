@@ -54,16 +54,15 @@ public class RBTGroupDaoImpl extends AbstractDaoImpl<RBTGroup> implements RBTGro
      */
     @Override
     public int deleteByNameAndTemplateId(String groupName, Integer templateId) {
-        StringBuilder buf = new StringBuilder(
-                "DELETE FROM " + modelClass.getSimpleName() + " g WHERE g.groupName = :groupName");
+        StringBuilder buf = new StringBuilder("DELETE FROM " + modelClass.getSimpleName() + " g WHERE g.groupName = ?1");
         if (templateId != null) {
-            buf.append(" AND g.templateId = :templateId");
+            buf.append(" AND g.templateId = ?2");
         }
 
         Query query = entityManager.createQuery(buf.toString());
-        query.setParameter("groupName", groupName);
+        query.setParameter(1, groupName);
         if (templateId != null) {
-            query.setParameter("templateId", templateId);
+            query.setParameter(2, templateId);
         }
 
         return query.executeUpdate();
@@ -89,9 +88,9 @@ public class RBTGroupDaoImpl extends AbstractDaoImpl<RBTGroup> implements RBTGro
      */
     @Override
     public List<RBTGroup> getByGroupName(String groupName) {
-        String sql = "select tg from RBTGroup tg where tg.groupName=?";
+        String sql = "select tg from RBTGroup tg where tg.groupName=?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, groupName);
+        query.setParameter(1, groupName);
 
         @SuppressWarnings("unchecked")
         List<RBTGroup> results = query.getResultList();

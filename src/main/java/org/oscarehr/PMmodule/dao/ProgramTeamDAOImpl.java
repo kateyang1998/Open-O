@@ -78,9 +78,9 @@ public class ProgramTeamDAOImpl extends HibernateDaoSupport implements ProgramTe
         }
         // Session session = getSession();
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select pt.id from ProgramTeam pt where pt.programId = ? and pt.name = ?");
-        query.setLong(0, programId.longValue());
-        query.setString(1, teamName);
+        Query query = session.createQuery("select pt.id from ProgramTeam pt where pt.programId = ?1 and pt.name = ?2" );
+        query.setParameter(1, programId.longValue());
+        query.setParameter(2, teamName);
 
         List teams = new ArrayList();
         try {
@@ -128,7 +128,8 @@ public class ProgramTeamDAOImpl extends HibernateDaoSupport implements ProgramTe
             throw new IllegalArgumentException();
         }
 
-        List<ProgramTeam> results = (List<ProgramTeam>) this.getHibernateTemplate().find("from ProgramTeam tp where tp.programId = ?", programId);
+        String sSQL = "from ProgramTeam tp where tp.programId = ?0";
+        List<ProgramTeam> results = (List<ProgramTeam>) this.getHibernateTemplate().find(sSQL, programId);
 
         if (log.isDebugEnabled()) {
             log.debug("getProgramTeams: programId=" + programId + ",# of results=" + results.size());

@@ -82,24 +82,25 @@ public class PropertyDaoImpl extends AbstractDaoImpl<Property> implements Proper
     @Deprecated
     @Override
     public List<Property> findByNameAndProvider(String propertyName, String providerNo) {
-        Query query = createQuery("p", "p.name = :name AND p.providerNo = :pno");
-        query.setParameter("name", propertyName);
-        query.setParameter("pno", providerNo);
+        Query query = createQuery("p", "p.name = ?1 AND p.providerNo = ?2");
+        query.setParameter(1, propertyName);
+        query.setParameter(2, providerNo);
         return query.getResultList();
     }
 
     @Override
     public List<Property> findByProvider(String providerNo) {
-        Query query = createQuery("p", "p.providerNo = :pno");
-        query.setParameter("pno", providerNo);
+        Query query = createQuery("p", "p.providerNo = ?1");
+        query.setParameter(1, providerNo);
         return query.getResultList();
     }
 
     @Override
     public Property checkByName(String name) {
 
-        String sql = " select x from " + this.modelClass.getName() + " x where x.name='" + name + "'";
+        String sql = " select x from " + modelClass.getSimpleName() + " x where x.name=?1";
         Query query = entityManager.createQuery(sql);
+        query.setParameter(1, name);
 
         try {
             return (Property) query.getSingleResult();

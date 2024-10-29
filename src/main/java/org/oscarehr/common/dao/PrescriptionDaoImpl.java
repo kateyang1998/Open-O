@@ -57,8 +57,7 @@ public class PrescriptionDaoImpl extends AbstractDaoImpl<Prescription> implement
 
     @Override
     public List<Prescription> findByDemographicIdUpdatedAfterDate(Integer demographicId, Date afterThisDate) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName()
-                + " x where x.demographicId=?1 and x.lastUpdateDate>=?2";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.demographicId=?1 and x.lastUpdateDate>=?2";
 
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
@@ -71,8 +70,7 @@ public class PrescriptionDaoImpl extends AbstractDaoImpl<Prescription> implement
 
     @Override
     public List<Prescription> findByDemographicIdUpdatedAfterDateExclusive(Integer demographicId, Date afterThisDate) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName()
-                + " x where x.demographicId=?1 and x.lastUpdateDate>?2";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.demographicId=?1 and x.lastUpdateDate>?2";
 
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
@@ -85,9 +83,9 @@ public class PrescriptionDaoImpl extends AbstractDaoImpl<Prescription> implement
 
     @Override
     public int updatePrescriptionsByScriptNo(Integer scriptNo, String comment) {
-        Query query = entityManager.createQuery("UPDATE Prescription p SET p.comments = :comments WHERE p.id = :id");
-        query.setParameter("comments", comment);
-        query.setParameter("id", scriptNo);
+        Query query = entityManager.createQuery("UPDATE Prescription p SET p.comments = ?1 WHERE p.id = ?2");
+        query.setParameter(1, comment);
+        query.setParameter(2, scriptNo);
         return query.executeUpdate();
     }
 
@@ -114,13 +112,12 @@ public class PrescriptionDaoImpl extends AbstractDaoImpl<Prescription> implement
     @Override
     public List<Prescription> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId,
                                                                       Date updatedAfterThisDateExclusive, int itemsToReturn) {
-        String sqlCommand = "select x from " + modelClass.getSimpleName()
-                + " x where x.demographicId=:demographicId and x.providerNo=:providerNo and x.lastUpdateDate>:updatedAfterThisDateExclusive order by x.lastUpdateDate";
+        String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.demographicId=?1 and x.providerNo=?2 and x.lastUpdateDate>?3 order by x.lastUpdateDate";
 
         Query query = entityManager.createQuery(sqlCommand);
-        query.setParameter("demographicId", demographicId);
-        query.setParameter("providerNo", providerNo);
-        query.setParameter("updatedAfterThisDateExclusive", updatedAfterThisDateExclusive);
+        query.setParameter(1, demographicId);
+        query.setParameter(2, providerNo);
+        query.setParameter(3, updatedAfterThisDateExclusive);
         setLimit(query, itemsToReturn);
 
         @SuppressWarnings("unchecked")
