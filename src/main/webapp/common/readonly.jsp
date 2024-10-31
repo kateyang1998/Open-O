@@ -120,27 +120,30 @@
         hashVal0 = getHash();
     }
 </script>
-<logic:notPresent name="isReadOnly">
+<c:if test="${empty isReadOnly}">
     <script type="text/javascript">
         readOnly = false;
         needToConfirm = true;
         window.onbeforeunload = confirmClose;
     </script>
-</logic:notPresent>
-<logic:present name="isReadOnly">
-    <logic:equal name="isReadOnly" value="true">
-        <script type="text/javascript">
-            readOnly = true;
-            needToConfirm = false;
-            setReadOnly();
-        </script>
-    </logic:equal>
-    <logic:equal name="isReadOnly" value="false">
-        <script type="text/javascript">
-            readOnly = false;
-            needToConfirm = true;
-            window.onbeforeunload = confirmClose;
-        </script>
-    </logic:equal>
-</logic:present>
+</c:if>
+
+<c:if test="${not empty isReadOnly}">
+    <c:choose>
+        <c:when test="${isReadOnly == 'true'}">
+            <script type="text/javascript">
+                readOnly = true;
+                needToConfirm = false;
+                setReadOnly();
+            </script>
+        </c:when>
+        <c:when test="${isReadOnly == 'false'}">
+            <script type="text/javascript">
+                readOnly = false;
+                needToConfirm = true;
+                window.onbeforeunload = confirmClose;
+            </script>
+        </c:when>
+    </c:choose>
+</c:if>
 <input type="hidden" name="token" value="<c:out value="${token}"/>"/>

@@ -30,8 +30,7 @@
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -221,15 +220,14 @@
                                                 request.setAttribute("phrUserLoginErrorMsg", request.getParameter("phrUserLoginErrorMsg"));
                                                 request.setAttribute("phrTechLoginErrorMsg", request.getParameter("phrTechLoginErrorMsg"));
                                             %>
-                                            <logic:present name="phrUserLoginErrorMsg">
-                                                <div class="phrLoginErrorMsg"><font color="red"><bean:write
-                                                    name="phrUserLoginErrorMsg"/>.</font>
-                                                <logic:present name="phrTechLoginErrorMsg">
+                                            <c:if test="${not empty phrUserLoginErrorMsg}">
+                                                <div class="phrLoginErrorMsg"><font color="red">${phrUserLoginErrorMsg}.</font>
+                                                <c:if test="${not empty phrTechLoginErrorMsg}">
                                                     <a href="javascript:;"
-                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[<bean:write name="phrTechLoginErrorMsg"/> </br>]">More
+                                                       title="fade=[on] requireclick=[off] cssheader=[moreInfoBoxoverHeader] cssbody=[moreInfoBoxoverBody] singleclickstop=[on] header=[MyOSCAR Server Response:] body=[${phrTechLoginErrorMsg} </br>]">More
                                                         Info</a></div>
-                                                </logic:present>
-                                            </logic:present>
+                                                </c:if>
+                                            </c:if>
                                             Status: <b>Not logged in</b><br/>
                                             <%=providerName%> password: <input type="password" id="phrPassword"
                                                                                name="phrPassword"
@@ -261,25 +259,25 @@
                         &nbsp;
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=0">
+                        <a href="<%= request.getContextPath() %>/phr/PhrMessage?orderby=0">
 
                             <bean:message key="oscarMessenger.DisplayMessages.msgStatus"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=1">
+                        <a href="<%= request.getContextPath() %>/phr/PhrMessage?orderby=1">
                             <bean:message key="oscarMessenger.DisplayMessages.msgFrom"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=2">
+                        <a action="<%= request.getContextPath() %>/phr/PhrMessage?orderby=2">
                             <bean:message key="oscarMessenger.DisplayMessages.msgSubject"/>
-                        </html-el:link>
+                        </a>
                     </th>
                     <th align="left" bgcolor="#DDDDFF">
-                        <html-el:link action="/phr/PhrMessage?orderby=3">
+                        <a action="<%= request.getContextPath() %>/phr/PhrMessage?orderby=3">
                             <bean:message key="oscarMessenger.DisplayMessages.msgDate"/>
-                        </html-el:link>
+                        </a>
                     </th>
                 </tr>
                 <c:forEach var="iMessage" items="${indivoMessages}">
@@ -299,9 +297,9 @@
                             <c:out value="${iMessage.senderPhr}"/></td>
                         <td bgcolor="#EEEEFF">
 
-                            <html-el:link action="/phr/PhrMessage?&method=read&id=${iMessage.id}">
+                            <a href="<%= request.getContextPath() %>/phr/PhrMessage?&method=read&id=${iMessage.id}">
                                 <c:out value="${iMessage.docSubject}"/>
-                            </html-el:link>
+                            </a>
 
                         </td>
                         <td bgcolor="#EEEEFF">
