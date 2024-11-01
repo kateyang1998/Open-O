@@ -228,7 +228,7 @@
 
                     <tr>
                         <td>
-                            <%=WebUtilsOld.popErrorMessagesAsHtml(session)%>
+                            <%=WebUtils.popErrorMessagesAsHtml(session)%>
                             <table>
                                 <%
                                     Long replyToMessageId = null;
